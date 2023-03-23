@@ -1,22 +1,3 @@
-
-// cod Antes de bardear--------------------------
-// import de fetchBaseQuery, para hacer peticiones no manuales
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-//aca se definen las funciones de peticiones http
-// export const apiSlice = createApi({
-  //   reducerPath: "api",
-  //   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000" }),
-//   endpoints: (builder) => ({
-//     getEmployees: builder.query({
-//       query: () => "/api/v1/employees", //?page=1&limit=20
-//     }),
-//   }),
-// });
-
-// // Hook para poder solicitar datos
-// export const { useGetEmployeesQuery } = apiSlice;
-
 //import de fetchBaseQuery, para hacer peticiones no manuales
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -27,14 +8,15 @@ export const employeesApi = createApi({
   endpoints: (builder) => ({
     getEmployees: builder.query({
       query: () => `/api/v1/employees?page=${1}&limit=${20}`,
-      providesTags: ["SetEmployee"]
+      providesTags: ["GetEmployees"],
+    //  transformResponse: response => response.sort((a, b)=> b.data.data.employee_id - a.data.data.employee_id),
     }),
     createEmployee: builder.mutation({
       query: (employee) => ({
         url: '/api/v1/employees/create',
         method: 'POST',
         body: employee,
-        invalidatesTags:["SetEmployee"], // si creo empl nuevo, se llama a la funcion endpoint getEmployees
+        invalidatesTags:["GetEmployees"], // funcion q llama a la peticion getEmployees y actualiza
       }),
     }),
     updateEmployee: builder.mutation({
@@ -49,9 +31,44 @@ export const employeesApi = createApi({
         url: `/api/v1/employees/delete/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags:["GetEmployees"],
+    }),
+    // Servicios de Assets
+    getAssets: builder.query({
+      query: () => `/api/v1/assets?page=${1}&limit=${20}`,
+    }),
+    createAsset: builder.mutation({
+      query: (asset) => ({
+        url: '/api/v1/assets/create',
+        method: 'POST',
+        body: asset,
+      }),
+    }),
+    updateAsset: builder.mutation({
+      query: (asset) => ({
+        url: `/api/v1/assets/update/${asset.id}`,
+        method: 'PUT',
+        body: asset,
+      }),
+    }),
+    deleteAsset: builder.mutation({
+      query: (id) => ({
+        url: `/api/v1/assets/delete/${id}`,
+        method: 'DELETE',
+      }),
     }),
   }),
 });
 
+
 // Hook para poder solicitar datos
-export const { useGetEmployeesQuery, useCreateEmployeeMutation, useUpdateEmployeeQuery, useDeleteEmployeeQuery } = employeesApi;
+export const { 
+  useGetEmployeesQuery, 
+  useCreateEmployeeMutation, 
+  useDeleteEmployeeMutation,
+  useUpdateEmployeeMutation, 
+
+  useGetAssetsQuery,
+  useCreateAssetMutation,
+  useDeleteAssetMutation,
+  useUpdateAssetMutation } = employeesApi;

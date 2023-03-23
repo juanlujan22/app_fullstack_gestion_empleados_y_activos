@@ -1,17 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteEmployee } from "../../features/employeeSlice";
+import { useDeleteEmployeeMutation } from "../../api/employeesApi";
+
 import {
-  Box,
-  Card,
-  CardHeader,
-  Heading,
-  CardBody,
-  Text,
-  CardFooter,
-  Button,
-} from "@chakra-ui/react";
-import {
+  IconButton,
   Table,
   Thead,
   Tbody,
@@ -22,13 +15,22 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
+import { DeleteIcon, EditIcon, Search2Icon } from "@chakra-ui/icons";
 const Employee = ({ empl }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [deleteEmployee] = useDeleteEmployeeMutation() // extraigo una funcion, que la nombro como "deleteEmployee"
+  
   const handleDelete = (id) => {
-    dispatch(deleteEmployee(id));
+    
+    if (confirm(`are you sure you want to delete the id ${id}`)) {
+      deleteEmployee(id)
+      // alert(`the employee was removed!!`)
+    }
+    
+    // dispatch(deleteEmployee(id));
   };
+
   const handleView = () => {
     navigate(`/detail/${empl.employee_id}`);
   };
@@ -59,7 +61,11 @@ const Employee = ({ empl }) => {
                 <Td border="solid 1px gray">{employee.team_id}</Td>
                 <Td border="solid 1px gray">{employee.join_date}</Td>
                 <Td border="solid 1px gray">{employee.rol}</Td>
-                <Td border="solid 1px gray">View, Edit, Delete</Td>
+                <Td border="solid 1px gray">
+                  <IconButton onClick={()=>{handleDelete(employee.employee_id)}} aria-label='Delete Employee' colorScheme='red' size='md' icon={<DeleteIcon />}/>, 
+                  <IconButton aria-label='Edit Icon' size='lg' icon={<EditIcon />}/>, 
+                  <IconButton aria-label='View Employee' size='lg' icon={<Search2Icon />}/>
+                </Td>
                 </Tr>)}
             </Tbody>
             </Table>

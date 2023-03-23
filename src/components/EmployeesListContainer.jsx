@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import Employee from "../pages/Employee/Employee";
-import { SimpleGrid, VStack, Button, Box, Spinner } from "@chakra-ui/react";
+import { VStack, Button, Box, Spinner } from "@chakra-ui/react";
+
 import { NavLink } from "react-router-dom";
 //import del hook de apiSlice
 import { useGetEmployeesQuery } from "../api/employeesApi";
@@ -9,6 +10,7 @@ const EmployeesListContainer = () => {
     // const employees = useSelector((state) => state.employees);
   //hook de apiSlice que le extraigo los estados que obtenemos al momento de solicitar datos, en la propiedad "data", respuesta de error o propiedad"isError" boolean, propiedad "isLoading" boolean para saber si esta cargando la consulta, propierar "error" que devuelve el error
   const {data, isError, isLoading, error}= useGetEmployeesQuery() 
+  
 //   const params = useParams();
 
 //   useEffect(() => {
