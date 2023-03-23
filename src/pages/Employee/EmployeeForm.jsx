@@ -13,16 +13,21 @@ import {
 } from "@chakra-ui/react";
 const EmployeeForm = () => {
   const [employee, setEmployee] = useState({
-    employee_id: "",
     first_name: "",
     last_name: "",
-    email: "",
-    phone_number: "",
-    hire_date: "",
-    salary: "",
-    commission_pct: "",
+    cuit: "",
+    team_id: "",
+    join_date: "",
+    rol: "",
     hasError: false,
   });
+/*employee_id
+first_name
+last_name
+cuit
+team_id
+join_date
+rol */
 
   const navigate = useNavigate();
   const params = useParams();
@@ -54,12 +59,12 @@ const EmployeeForm = () => {
     navigate("/");
   };
 
-  const emailRegExp = new RegExp(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/);
+//   const emailRegExp = new RegExp(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/);
 
-  function handleBlur() {
-    const hasError = !emailRegExp.test(employee.email);
-    setEmployee((prevState) => ({ ...prevState, hasError: true }));
-  }
+//   function handleBlur() {
+//     const hasError = !emailRegExp.test(employee.email);
+//     setEmployee((prevState) => ({ ...prevState, hasError: true }));
+//   }
   return (
     <>
       <VStack p={7} justifyContent="center">
@@ -71,14 +76,16 @@ const EmployeeForm = () => {
           p={40}
         >
           <form onSubmit={handleSubmit}>
-            <FormLabel mt={5}>Employee id</FormLabel>
+            {/* <FormLabel style={{ visibility: "hidden" }}  mt={5}>Employee id</FormLabel>
             <Input
+                //desactivar el input para que no sea modificable
               placeholder="Employee id"
               onChange={handleChange}
               type="number"
+              style={{ visibility: "hidden" }}
               value={employee.employee_id}
               name="employee_id"
-            />
+            /> */}
             <FormLabel mt={10}>First Name</FormLabel>
             <Input
               placeholder="First Name"
@@ -95,7 +102,7 @@ const EmployeeForm = () => {
               value={employee.last_name}
               name="last_name"
             />
-            <FormLabel mt={10}>Email</FormLabel>
+            {/* <FormLabel mt={10}>Email</FormLabel>
             <Input
               onBlur={handleBlur}
               placeholder="Email"
@@ -112,38 +119,46 @@ const EmployeeForm = () => {
               style={{ visibility: employee.hasError ? "visible" : "hidden" }}
             >
               This email is not valid
-            </p>
-            <FormLabel mt={10}>Phone Number</FormLabel>
+            </p> 
+            /*employee_id
+            first_name
+            last_name
+            cuit
+team_id
+join_date
+rol
+            */} 
+            <FormLabel mt={10}>Cuit</FormLabel>
             <Input
-              placeholder="Phone Number"
+              placeholder="Cuit"
               onChange={handleChange}
               type="number"
-              value={employee.phone_number}
-              name="phone_number"
+              value={employee.cuit}
+              name="cuit"
             />
-            <FormLabel mt={10}>Hire Date</FormLabel>
+            <FormLabel mt={10}>Team Id</FormLabel>
             <Input
-              placeholder="Hire Data"
+              placeholder="Team Id"
+              onChange={handleChange}
+              type="number"
+              value={employee.team_id}
+              name="team_id"
+            />
+            <FormLabel mt={10}>Join Date</FormLabel>
+            <Input
+              placeholder="Join date"
               onChange={handleChange}
               type="text"
-              value={employee.hire_date}
-              name="hire_date"
+              value={employee.join_date}
+              name="join_date"
             />
-            <FormLabel mt={10}>Salary</FormLabel>
+            <FormLabel mt={10}>Rol</FormLabel>
             <Input
-              placeholder="Salary"
+              placeholder="Rol"
               onChange={handleChange}
-              type="number"
-              value={employee.salary}
-              name="salary"
-            />
-            <FormLabel mt={10}>Commission</FormLabel>
-            <Input
-              placeholder="Commission"
-              onChange={handleChange}
-              type="number"
-              value={employee.commission_pct}
-              name="commission_pct"
+              type="text"
+              value={employee.rol}
+              name="rol"
             />
             <HStack mt={20}>
               <Button

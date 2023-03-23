@@ -4,10 +4,8 @@ const initialState = [
   {
   }
 ];
-// en cada reducer implementar el hook de pedido
-//hooks de assetsApi ={ useGetAssetsQuery, useCreateAssetQuery, useUpdateAssetQuery, useDeleteAssetQuery} y 
-//hooks de employeesApi={useGetEmployeesQuery, useCreateEmployeeQuery, useUpdateEmployeeQuery, useDeleteEmployeeQuery}
-export const employesSlice = createSlice({
+
+export const assetSlice = createSlice({
   name: "EMPLOYEES",
   initialState,
   reducers: {
@@ -49,6 +47,6 @@ export const employesSlice = createSlice({
 });
 
 export const { addEmployee, deleteEmployee, editEmploye } =
-  employesSlice.actions;
+assetSlice.actions;
 
-export default employesSlice.reducer;
+export default assetSlice.reducer;
