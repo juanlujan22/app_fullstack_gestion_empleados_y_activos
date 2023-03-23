@@ -6,19 +6,21 @@ import { NavLink } from "react-router-dom";
 import { useGetEmployeesQuery } from "../api/employeesApi";
 
 const EmployeesListContainer = () => {
-    // const employees = useSelector((state) => state.employes);
+    // const employees = useSelector((state) => state.employees);
   //hook de apiSlice que le extraigo los estados que obtenemos al momento de solicitar datos, en la propiedad "data", respuesta de error o propiedad"isError" boolean, propiedad "isLoading" boolean para saber si esta cargando la consulta, propierar "error" que devuelve el error
   const {data, isError, isLoading, error}= useGetEmployeesQuery() 
 //   const params = useParams();
 
 //   useEffect(() => {
-    // si hay id en la url, las recibo y las hago llegar a  employeesApi, 
+// si hay id en la url, las recibo y las hago llegar a  employeesApi, 
 //     if (params.id) {
 //       setEmployee(emplList.find((empl) => empl.employee_id == params.id));
 //     }
 //   }, []);
+
   if(isLoading) return <div> <h1>Loading...</h1>  </div>; 
   else if(isError) return <div> Error {error.message} </div>; 
+
   return (
     <>
       <VStack mt={10}>

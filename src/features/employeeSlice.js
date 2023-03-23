@@ -1,5 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+//import del hooks employeesApi
+// import {useCreateEmployeeMutation} from '../../api/employeesApi'
 
+// hooks de Api, solicitudes https crud
+// const [createEmployee] = useCreateEmployeeMutation()
+// createEmployee({
+//   employee
+// })
 const initialState = [
   {
   }

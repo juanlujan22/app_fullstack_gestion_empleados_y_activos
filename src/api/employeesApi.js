@@ -27,12 +27,14 @@ export const employeesApi = createApi({
   endpoints: (builder) => ({
     getEmployees: builder.query({
       query: () => `/api/v1/employees?page=${1}&limit=${20}`,
+      providesTags: ["SetEmployee"]
     }),
     createEmployee: builder.mutation({
       query: (employee) => ({
         url: '/api/v1/employees/create',
         method: 'POST',
         body: employee,
+        invalidatesTags:["SetEmployee"], // si creo empl nuevo, se llama a la funcion endpoint getEmployees
       }),
     }),
     updateEmployee: builder.mutation({
@@ -52,4 +54,4 @@ export const employeesApi = createApi({
 });
 
 // Hook para poder solicitar datos
-export const { useGetEmployeesQuery, useCreateEmployeeQuery, useUpdateEmployeeQuery, useDeleteEmployeeQuery } = employeesApi;
+export const { useGetEmployeesQuery, useCreateEmployeeMutation, useUpdateEmployeeQuery, useDeleteEmployeeQuery } = employeesApi;
