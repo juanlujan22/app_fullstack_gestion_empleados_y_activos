@@ -1,22 +1,24 @@
 //import de fetchBaseQuery, para hacer peticiones no manuales
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-//aca se definen las funciones de peticiones http
+//aca se definen las funciones de peticiones http selectedEmployee
 export const employeesApi = createApi({
   reducerPath: 'employeesApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000' }),
   endpoints: (builder) => ({
     getEmployees: builder.query({
       query: () => `/api/v1/employees?page=${1}&limit=${20}`,
-      providesTags: ["GetEmployees"],
-    //  transformResponse: response => response.sort((a, b)=> b.data.data.employee_id - a.data.data.employee_id),
+      providesTags: ["GetEmployees"], // funcion que actualiza cuando es invocado
+    }),
+    getEmployeeById: builder.query({
+      query: (id) => `/api/v1/employees/${id}`,
     }),
     createEmployee: builder.mutation({
       query: (employee) => ({
         url: '/api/v1/employees/create',
         method: 'POST',
         body: employee,
-        invalidatesTags:["GetEmployees"], // funcion q llama a la peticion getEmployees y actualiza
+        invalidatesTags:["GetEmployees"], // funcion q llama a la peticion getEmployees y actualiza. reemplaza a useEffect
       }),
     }),
     updateEmployee: builder.mutation({
@@ -25,6 +27,7 @@ export const employeesApi = createApi({
         method: 'PUT',
         body: employee,
       }),
+      invalidatesTags:["GetEmployees"],
     }),
     deleteEmployee: builder.mutation({
       query: (id) => ({
@@ -33,9 +36,12 @@ export const employeesApi = createApi({
       }),
       invalidatesTags:["GetEmployees"],
     }),
+
     // Servicios de Assets
+    
     getAssets: builder.query({
       query: () => `/api/v1/assets?page=${1}&limit=${20}`,
+      providesTags: ["GetAssets"],
     }),
     createAsset: builder.mutation({
       query: (asset) => ({
@@ -43,6 +49,7 @@ export const employeesApi = createApi({
         method: 'POST',
         body: asset,
       }),
+      invalidatesTags:["GetAssets"],
     }),
     updateAsset: builder.mutation({
       query: (asset) => ({
@@ -50,12 +57,14 @@ export const employeesApi = createApi({
         method: 'PUT',
         body: asset,
       }),
+      invalidatesTags:["GetAssets"],
     }),
     deleteAsset: builder.mutation({
       query: (id) => ({
         url: `/api/v1/assets/delete/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags:["GetAssets"],
     }),
   }),
 });
@@ -64,6 +73,7 @@ export const employeesApi = createApi({
 // Hook para poder solicitar datos
 export const { 
   useGetEmployeesQuery, 
+  useGetEmployeeByIdQuery,
   useCreateEmployeeMutation, 
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation, 

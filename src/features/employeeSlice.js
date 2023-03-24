@@ -1,34 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-//import del hooks employeesApi
-// import {useCreateEmployeeMutation} from '../../api/employeesApi'
 
-// hooks de Api, solicitudes https crud
-// const [createEmployee] = useCreateEmployeeMutation()
-// createEmployee({
-//   employee
-// })
-const initialState = [
-  {
-  }
-];
-// en cada reducer implementar el hook de pedido
-//hooks de assetsApi ={ useGetAssetsQuery, useCreateAssetQuery, useUpdateAssetQuery, useDeleteAssetQuery} y 
-//hooks de employeesApi={useGetEmployeesQuery, useCreateEmployeeQuery, useUpdateEmployeeQuery, useDeleteEmployeeQuery}
-export const employesSlice = createSlice({
+const initialState = [ ];
+
+export const employeesSlice = createSlice({
   name: "EMPLOYEES",
   initialState,
   reducers: {
-    addEmployee: (state, action) => {
-      return [...state, action.payload];
+     getEmployees: (state, action) => {
+      // filtro para empleados repetidos
+      const newEmployees = action.payload.data.filter(employee => !state.
+        some(existingEmployee => existingEmployee.employee_id === employee.employee_id));
+      state.push(...newEmployees);
     },
-    deleteEmployee: (state, action) => {
-      const findEmpl = state.find(
-        (elem) => elem.employee_id === action.payload
-      );
-      if (findEmpl) {
-        state.splice(state.indexOf(findEmpl), 1);
-      }
-    },
+
     editEmploye: (state, action) => {
       const {
         first_name,
@@ -52,10 +36,9 @@ export const employesSlice = createSlice({
         findEmpl.commission_pct = commission_pct;
       }
     },
-  },
-});
+}})
 
-export const { addEmployee, deleteEmployee, editEmploye } =
-  employesSlice.actions;
+export const { getEmployees, editEmploye } =
+  employeesSlice.actions;
 
-export default employesSlice.reducer;
+export default employeesSlice.reducer;

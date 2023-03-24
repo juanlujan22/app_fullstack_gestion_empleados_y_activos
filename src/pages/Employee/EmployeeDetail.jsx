@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
+
 import {
   VStack,
   Card,
@@ -15,28 +16,36 @@ import {
 const EmployeeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const employe = useSelector((store) => store.employes);
+  const employeesList = useSelector((store) => store.employees);
 
-  const findEmpl = employe.find((empl) => empl.employee_id == id);
+  const findEmpl = employeesList.find((empl) => empl.employee_id == id);
+ 
   const {
+    employee_id,
     first_name,
     last_name,
-    phone_number,
-    email,
-    hire_date,
-    salary,
-    commission_pct,
-    employee_id,
+    cuit,
+    team_id,
+    join_date,
+    rol
   } = findEmpl;
 
   const handlerEdit = () => {
-    navigate(`/edit-employee/${employee_id}`);
+    navigate(`/edit/${employee_id}`);
   };
 
   const handleCancel = () => {
     navigate("/");
   };
 
+  const EditEmployee = () => (
+    <NavLink to={`/edit/${employee_id}`}>
+      <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
+        Edit Employee
+      </Button>
+    </NavLink>
+  );
+  
   return (
     <div>
       <VStack mt="20">
@@ -55,23 +64,24 @@ const EmployeeDetail = () => {
               <br />
               Last name: {last_name}
             </Heading>
-          </CardHeader>
+          </CardHeader>    
           <CardBody>
-            <Text> salary: {salary}</Text>
-            <Text> commission: {commission_pct}</Text>
-            <Text> hire date:{hire_date}</Text>
-            <Text> phone: {phone_number} </Text>
-            <Text> email: {email} </Text>
+            <Text> cuit: {cuit}</Text>
+            <Text> team id: {team_id}</Text>
+            <Text> join date:{join_date}</Text>
+            <Text> rol: {rol} </Text>
+            <Text> employee id: {employee_id} </Text>
           </CardBody>
           <CardFooter justifyContent="center">
+          <EditEmployee />
             <Button
+              disabled="true"
               bg="blueviolet"
               borderRadius={15}
               h={40}
               w={65}
               onClick={handlerEdit}
             >
-              {" "}
               Edit
             </Button>
             <Button
@@ -81,7 +91,7 @@ const EmployeeDetail = () => {
               w={65}
               onClick={handleCancel}
             >
-              {" "}
+
               Cancel
             </Button>
           </CardFooter>

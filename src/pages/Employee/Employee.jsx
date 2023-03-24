@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { deleteEmployee } from "../../features/employeeSlice";
 import { useDeleteEmployeeMutation } from "../../api/employeesApi";
 
 import {
@@ -8,35 +6,37 @@ import {
   Table,
   Thead,
   Tbody,
- HStack,
+  Center,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon, Search2Icon } from "@chakra-ui/icons";
 const Employee = ({ empl }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [deleteEmployee] = useDeleteEmployeeMutation() // extraigo una funcion, que la nombro como "deleteEmployee"
   
   const handleDelete = (id) => {
-    
     if (confirm(`are you sure you want to delete the id ${id}`)) {
       deleteEmployee(id)
-      // alert(`the employee was removed!!`)
+      alert(`the employee was removed!!`)
     }
-    
-    // dispatch(deleteEmployee(id));
   };
 
-  const handleView = () => {
-    navigate(`/detail/${empl.employee_id}`);
+  const handleView = (id) => {
+    navigate(`/detail/${id}`);
   };
+
+  const handleEdit=(id) =>{
+    navigate(`/edit/${id}`);
+  }
 
   return (
     <div className="table"> 
+    <Center>
+    <h2>TABLA DE EMPLEADOS</h2>
+    </Center>
     <TableContainer  border="solid 1px gray" justifyContent="center">
             <Table >
             <Thead>
@@ -44,7 +44,7 @@ const Employee = ({ empl }) => {
                 <Th>Employee Id</Th>
                 <Th>First Name</Th>
                 <Th>Last Name</Th>
-                <Th>Cuit</Th>
+                <Th isNumeric>Cuit</Th>
                 <Th isNumeric>Team Id</Th>
                 <Th>Join Date</Th>
                 <Th>Rol</Th>
@@ -63,8 +63,8 @@ const Employee = ({ empl }) => {
                 <Td border="solid 1px gray">{employee.rol}</Td>
                 <Td border="solid 1px gray">
                   <IconButton onClick={()=>{handleDelete(employee.employee_id)}} aria-label='Delete Employee' colorScheme='red' size='md' icon={<DeleteIcon />}/>, 
-                  <IconButton aria-label='Edit Icon' size='lg' icon={<EditIcon />}/>, 
-                  <IconButton aria-label='View Employee' size='lg' icon={<Search2Icon />}/>
+                  <IconButton onClick={()=>{handleEdit(employee.employee_id)}} aria-label='Edit Icon' size='lg' icon={<EditIcon />}/>, 
+                  <IconButton onClick={()=>{handleView(employee.employee_id)}} aria-label='View Employee' size='lg' icon={<Search2Icon />}/>
                 </Td>
                 </Tr>)}
             </Tbody>
@@ -74,49 +74,3 @@ const Employee = ({ empl }) => {
   );
 };
 export default Employee;
-
-{
-  /* <Box boxShadow="dark-lg" p="6" rounded="md">
-<Card
-  p={15}
-  m={15}
-  borderRadius={20}
-  boxShadow="15px 16px lightgray"
-  bgColor="white"
-  alignItems="center"
-  border="solid 3px blueviolet"
->
-  <CardHeader>
-    <Heading size="md">
-      Name: {empl.first_name},
-      <br />
-      Last name: {empl.last_name}
-    </Heading>
-  </CardHeader>
-  <CardBody>
-    <Text>{empl.email} </Text>
-    <Text>{empl.phone_number} </Text>
-  </CardBody>
-  <CardFooter justifyContent="center">
-    <Button
-      borderRadius={15}
-      h={40}
-      w={70}
-      bg="blueviolet"
-      onClick={() => handleView()}
-    >
-      View here
-    </Button>
-    <Button
-      borderRadius={15}
-      h={40}
-      w={70}
-      bg="yellow"
-      onClick={() => handleDelete(empl.employee_id)}
-    >
-      Delete
-    </Button>
-  </CardFooter>
-</Card>
-</Box> */
-}

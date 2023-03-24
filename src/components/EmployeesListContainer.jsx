@@ -1,43 +1,63 @@
-import { useSelector } from "react-redux";
+import { VStack, Button, Center } from "@chakra-ui/react";
+import { useEffect } from "react";
 import Employee from "../pages/Employee/Employee";
-import { VStack, Button, Box, Spinner } from "@chakra-ui/react";
-
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {getEmployees}from "../features/employeeSlice"
 //import del hook de apiSlice
 import { useGetEmployeesQuery } from "../api/employeesApi";
+import AssetListContainer from "./Asset/AssetsListContainer"
 
 const EmployeesListContainer = () => {
-    // const employees = useSelector((state) => state.employees);
-  //hook de apiSlice que le extraigo los estados que obtenemos al momento de solicitar datos, en la propiedad "data", respuesta de error o propiedad"isError" boolean, propiedad "isLoading" boolean para saber si esta cargando la consulta, propierar "error" que devuelve el error
-  const {data, isError, isLoading, error}= useGetEmployeesQuery() 
+
+   const dispatch = useDispatch()
+
+   const {data, isError, isLoading, isSuccess, error}= useGetEmployeesQuery() 
+
+   const AddEmployeeButton = () => (
+    <NavLink to={"/create-employee"}>
+      <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
+        Add Employee
+      </Button>
+    </NavLink>
+  );
   
-//   const params = useParams();
+  useEffect(() => { 
+    if (isSuccess) {
+      dispatch(getEmployees(data))
+    }
+  }, [data]);
 
-//   useEffect(() => {
-// si hay id en la url, las recibo y las hago llegar a  employeesApi, 
-//     if (params.id) {
-//       setEmployee(emplList.find((empl) => empl.employee_id == params.id));
-//     }
-//   }, []);
 
-  if(isLoading) return <div> <h1>Loading...</h1>  </div>; 
-  else if(isError) return <div> Error {error.message} </div>; 
+  if (isLoading) {
+    return (
+      <Center>
+        <h1>Loading...</h1>
+      </Center>
+    );
+  } else if (isError) {
+    return (
+      <Center>
+        <div>Error {error.message}</div>
+      </Center>
+    );
+  }
 
   return (
     <>
       <VStack mt={10}>
-        <NavLink to={"/create-employee"}>
-          <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
-            Add Employee
-          </Button>
-        </NavLink>
+       <AddEmployeeButton/>
       </VStack>
-      {data.data.length === 0 ? 
-      (<Box display="flex" justifyContent="center">
-          <h2> No Hay RRHH Disponibles </h2>
-        </Box>
-        ) : 
-      (< Employee empl={data.data} />)}
+      {data.length === 0 ? (
+        <Center>
+          <h2>No Hay RRHH Disponibles</h2>
+        </Center>
+      ) : (
+        <>
+        <Employee empl={data.data} />
+        <AssetListContainer />
+        </>
+      )}
     </>
   );
 };

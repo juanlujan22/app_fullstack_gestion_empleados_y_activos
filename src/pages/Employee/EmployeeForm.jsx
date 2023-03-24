@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addEmployee, editEmploye } from "../../features/employeeSlice";
 import { useNavigate } from "react-router-dom";
-import {useCreateEmployeeMutation} from '../../api/employeesApi'
+import {useCreateEmployeeMutation, useUpdateEmployeeMutation} from '../../api/employeesApi'
 import {
   FormControl,
   FormLabel,
@@ -13,7 +12,18 @@ import {
   HStack,
 } from "@chakra-ui/react";
 const EmployeeForm = () => {
-  const [employee, setEmployee] = useState({
+  
+  const navigate = useNavigate();
+  const params = useParams();
+  
+  const [createEmployee] = useCreateEmployeeMutation()
+  // const getEmployeeById= useGetEmployeeByIdQuery()
+  // const dispatch = useDispatch();
+  const emplList = useSelector((state) => state.employees);
+  
+  // const selectedEmployee =  params.id && useSelector(state => state.employees.find(empl => empl.employee_id === params.id))
+  //selectedEmployee || 
+  const [employee, setEmployee] = useState( {
     first_name: "",
     last_name: "",
     cuit: "",
@@ -21,58 +31,39 @@ const EmployeeForm = () => {
     join_date: "",
     rol: "",
   });
-  /*employee_id
-  first_name
-  last_name
-  cuit
-  team_id
-  join_date
-  rol */
-
-  const navigate = useNavigate();
-  const params = useParams();
-
-  const [createEmployee, objCreate] = useCreateEmployeeMutation()
-  
-  const dispatch = useDispatch();
-  const emplList = useSelector((state) => state.employes);
-  console.log("Error:"+ objCreate.isError)
 
   useEffect(() => {
     if (params.id) {
-      setEmployee(emplList.find((empl) => empl.employee_id == params.id));
+      setEmployee(emplList.find((empl) => empl.employee_id === params.id));
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (params.id) {
+  //     console.log(getEmployeeById(params.id))
+  //   }
+  // }, []);
 
   const handleChange = (e) => {
     setEmployee({ ...employee, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(employee)
-    // if (params.id) {
-    //   dispatch(editEmploye(employee));
-    //   alert("Employee edited successfully!!");
-    // } else {
-      createEmployee(
-        employee
-      )
-      alert("Employee added successfully!!")
-    //   dispatch(addEmployee(employee));
-    //   alert("Employee added successfully!!");
-    // }
-    navigate("/");
+    if (params.id) {
+      useUpdateEmployeeMutation(employee);
+      alert("Employee edited successfully!!");
+      navigate("/");
+    } else {
+      createEmployee(employee)      
+      alert("Employee added successfully!!");
+      navigate("/");
+    }
   };
   const handleCancel = () => {
     navigate("/");
   };
 
-//   const emailRegExp = new RegExp(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/);
-
-//   function handleBlur() {
-//     const hasError = !emailRegExp.test(employee.email);
-//     setEmployee((prevState) => ({ ...prevState, hasError: true }));
-//   }
   return (
     <>
       <VStack p={7} justifyContent="center">
@@ -84,15 +75,6 @@ const EmployeeForm = () => {
           p={40}
         >
           <form onSubmit={handleSubmit}>
-            {/* <FormLabel mt={5}>Employee id</FormLabel>
-            <Input
-              placeholder="Employee id, No modificable"
-              onChange={handleChange}
-              type="number"
-              value={employee.employee_id}
-              disabled="true"
-              name="employee_id"
-            /> */}
             <FormLabel mt={10}>First Name</FormLabel>
             <Input
               placeholder="First Name"

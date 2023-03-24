@@ -1,24 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [
-  {
-  }
-];
+const initialState = [];
 
 export const assetSlice = createSlice({
-  name: "EMPLOYEES",
+  name: "ASSETS",
   initialState,
   reducers: {
-    addEmployee: (state, action) => {
+    addAssets: (state, action) => {
       return [...state, action.payload];
-    },
-    deleteEmployee: (state, action) => {
-      const findEmpl = state.find(
-        (elem) => elem.employee_id === action.payload
-      );
-      if (findEmpl) {
-        state.splice(state.indexOf(findEmpl), 1);
-      }
     },
     editEmploye: (state, action) => {
       const {
@@ -46,7 +35,7 @@ export const assetSlice = createSlice({
   },
 });
 
-export const { addEmployee, deleteEmployee, editEmploye } =
+export const { addAssets, editEmploye } =
 assetSlice.actions;
 
 export default assetSlice.reducer;
