@@ -6,6 +6,11 @@ export const assetSlice = createSlice({
   name: "ASSETS",
   initialState,
   reducers: {
+    getAssets: (state, action) => {
+      // filtro para assets repetidos
+      const newAssets = action.payload.data.filter(asset => !state.some(existingAsset => existingAsset.asset_id === asset.asset_id));
+      state.push(...newAssets);
+    },
     addAssets: (state, action) => {
       return [...state, action.payload];
     },
@@ -35,7 +40,7 @@ export const assetSlice = createSlice({
   },
 });
 
-export const { addAssets, editEmploye } =
+export const { getAssets, addAssets, editEmploye } =
 assetSlice.actions;
 
 export default assetSlice.reducer;

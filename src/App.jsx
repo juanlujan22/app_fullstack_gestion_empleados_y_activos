@@ -4,6 +4,7 @@ import NavBar from "./components/Navbar";
 import EmployeesListContainer from "./components/EmployeesListContainer";
 import EmployeeDetail from "./pages/Employee/EmployeeDetail";
 import EmployeeForm from "./pages/Employee/EmployeeForm";
+import AssetForm from "./pages/Asset/AssetForm";
 import "./App.css";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<EmployeesListContainer />} />
           <Route path="/detail/:id" element={<EmployeeDetail />} />
           <Route path="/create-employee" element={<EmployeeForm />} />
+          <Route path="/create-asset" element={<AssetForm />} />
           <Route path="/edit/:id" element={<EmployeeForm />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

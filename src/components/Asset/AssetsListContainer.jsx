@@ -1,5 +1,10 @@
 import { useGetAssetsQuery, useDeleteAssetMutation } from "../../api/employeesApi";
+import {getAssets} from "../../features/assetSlice"
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 import {
+  Button,
   IconButton,
   Table,
   Thead,
@@ -13,8 +18,17 @@ import {
 import { DeleteIcon, EditIcon, Search2Icon } from "@chakra-ui/icons";
 const AssetListContainer = () => {
   //hook de apiSlice que le extraigo los estados que obtenemos al momento de solicitar datos, en la propiedad "data", respuesta de error o propiedad"isError" boolean, propiedad "isLoading" boolean para saber si esta cargando la consulta, propierar "error" que devuelve el error
-  const { data, isError, isLoading, error } = useGetAssetsQuery();
+  const { data, isError, isLoading, error, isSuccess } = useGetAssetsQuery();
   const [deleteAsset] = useDeleteAssetMutation()
+  const dispatch = useDispatch()
+
+
+  useEffect(() => { 
+    if (isSuccess) {
+      dispatch(getAssets(data))
+    }
+  }, [data]);
+
   if (isLoading)
     return (
       <div>
@@ -23,19 +37,28 @@ const AssetListContainer = () => {
       </div>
     );
   else if (isError) return <div> Error {error.message} </div>;
-
+  
   const handleDelete = (id) => {
     if (confirm(`are you sure you want to delete the id ${id}`)) {
       deleteAsset(id)
       alert(`the Asset was removed!!`)
     }
   };
+  const AddAssetButton = () => (
+    <NavLink to={"/create-asset"}>
+      <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
+        Add Asset
+      </Button>
+    </NavLink>
+  );
+
 
 const handleView = ()=>{}
 
   return (
     <>
       <Center> <h3> Asset List </h3> </Center>
+      <Center>  <AddAssetButton />  </Center>
       {data.data.length === 0 
       ? (<Box display="flex" justifyContent="center">
           <h2> No Hay Assets Disponibles </h2>
@@ -45,14 +68,14 @@ const handleView = ()=>{}
           <Table>
             <Thead>
               <Tr bg="lavender">
-                <Th>Employee Id</Th>
-                <Th>Asset Id</Th>
-                <Th>name</Th>
-                <Th>type</Th>
-                <Th>marca</Th>
-                <Th isNumeric>code</Th>
-                <Th>purchase_date</Th>
-                <Th>description</Th>
+                <Th>Name</Th>
+                <Th>Type</Th>
+                <Th >Code</Th>
+                <Th>Marca</Th>
+                <Th>Description</Th>
+                <Th>Purchase Date</Th>
+                <Th>Employee id</Th>
+                <Th>Asset id</Th>
                 <Th>ACTIONS</Th>
               </Tr>
             </Thead>

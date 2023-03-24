@@ -12,7 +12,6 @@ export const employeesSlice = createSlice({
         some(existingEmployee => existingEmployee.employee_id === employee.employee_id));
       state.push(...newEmployees);
     },
-
     editEmploye: (state, action) => {
       const {
         first_name,

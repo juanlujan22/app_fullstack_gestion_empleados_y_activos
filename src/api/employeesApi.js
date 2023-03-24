@@ -38,7 +38,7 @@ export const employeesApi = createApi({
     }),
 
     // Servicios de Assets
-    
+
     getAssets: builder.query({
       query: () => `/api/v1/assets?page=${1}&limit=${20}`,
       providesTags: ["GetAssets"],
