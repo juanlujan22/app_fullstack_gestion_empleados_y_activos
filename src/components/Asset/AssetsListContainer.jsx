@@ -2,7 +2,7 @@ import { useGetAssetsQuery, useDeleteAssetMutation } from "../../api/employeesAp
 import {getAssets} from "../../features/assetSlice"
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import {
   Button,
   IconButton,
@@ -21,7 +21,7 @@ const AssetListContainer = () => {
   const { data, isError, isLoading, error, isSuccess } = useGetAssetsQuery();
   const [deleteAsset] = useDeleteAssetMutation()
   const dispatch = useDispatch()
-
+  const navigate = useNavigate();
 
   useEffect(() => { 
     if (isSuccess) {
@@ -51,13 +51,18 @@ const AssetListContainer = () => {
       </Button>
     </NavLink>
   );
+  const handleEdit = (id)=>{
+    navigate(`/edit-asset/${id}`)
+  }
 
+const handleView = (id)=>{
+  navigate(`/detail-asset/${id}`)
 
-const handleView = ()=>{}
+}
 
   return (
     <>
-      <Center> <h3> Asset List </h3> </Center>
+      <Center> <h2> Asset List </h2> </Center>
       <Center>  <AddAssetButton />  </Center>
       {data.data.length === 0 
       ? (<Box display="flex" justifyContent="center">
@@ -92,8 +97,8 @@ const handleView = ()=>{}
                   <Td border="solid 1px gray">{asset.asset_id}</Td>
                   <Td border="solid 1px gray">
                     <IconButton onClick={()=>{handleDelete(asset.asset_id)}} aria-label='Delete Employee' colorScheme='red' size='md' icon={<DeleteIcon />}/>, 
-                    <IconButton aria-label='Edit Icon' size='lg' icon={<EditIcon />}/>, 
-                    <IconButton onClick={()=>{handleView(employee.employee_id)}} aria-label='View Employee' size='lg' icon={<Search2Icon />}/>
+                    <IconButton onClick={()=>{handleEdit(asset.asset_id)}} aria-label='Edit Icon' size='lg' icon={<EditIcon />}/>, 
+                    <IconButton onClick={()=>{handleView(asset.asset_id)}} aria-label='View Employee' size='lg' icon={<Search2Icon />}/>
                   </Td>
                 </Tr>
               ))}

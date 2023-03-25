@@ -43,6 +43,9 @@ export const employeesApi = createApi({
       query: () => `/api/v1/assets?page=${1}&limit=${20}`,
       providesTags: ["GetAssets"],
     }),
+    getAssetById: builder.query({
+      query: (id) => `/api/v1/assets/${id}`,
+    }),
     createAsset: builder.mutation({
       query: (asset) => ({
         url: '/api/v1/assets/create',
@@ -79,6 +82,7 @@ export const {
   useUpdateEmployeeMutation, 
 
   useGetAssetsQuery,
+  useGetAssetByIdQuery,
   useCreateAssetMutation,
   useDeleteAssetMutation,
   useUpdateAssetMutation } = employeesApi;

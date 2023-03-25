@@ -15,7 +15,6 @@ const NavBar = () => {
         >
           <NavLink to="/" fontSize="5xl">
             <Heading as="h1" size="4xl" color="black">
-              {" "}
               Vortex Employees List
             </Heading>
           </NavLink>

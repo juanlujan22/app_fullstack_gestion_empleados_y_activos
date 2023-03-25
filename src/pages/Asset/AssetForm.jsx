@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {useCreateAssetMutation, useUpdateAssetMutation} from '../../api/employeesApi'
+import {useCreateAssetMutation, useUpdateAssetMutation, useGetAssetByIdQuery} from '../../api/employeesApi'
 import {
   FormControl,
   FormLabel,
@@ -15,12 +14,21 @@ const AssetForm = () => {
   
   const navigate = useNavigate();
   const params = useParams();
-  const [updateAsset] = useUpdateAssetMutation()
+  const [updateAsset, objUpdate] = useUpdateAssetMutation()
   const [createAsset] = useCreateAssetMutation()
 
-  const assetList = useSelector((state) => state.assets);
+  const { data, isSuccess } = useGetAssetByIdQuery(parseInt(params.id));
+  console.log(objUpdate)
+  console.log(objUpdate.isError)
+  console.log(updateAsset)
+
+
+
+
+
   
   const [asset, setAsset] = useState( {
+    asset_id: "",
     name: "",
     type: "",
     code: "",
@@ -29,14 +37,22 @@ const AssetForm = () => {
     purchase_date: "",
     employee_id:"",
   });
-
+  console.log(asset)
   useEffect(() => {
-    if (params.id) {
-      setAsset(assetList.find((asset) => asset.asset_id === params.id));
+    if (params.id && isSuccess && data && data.data && data.data.purchase_date) {
+      setAsset({
+        ...asset,
+        asset_id:data.data.asset_id,
+        name: data.data.name,
+        type: data.data.type,
+        code: data.data.code,
+        marca: data.data.marca,
+        description: data.data.description,
+        purchase_date: new Date(data.data.purchase_date).toISOString().slice(0, 10),
+        employee_id: data.data.employee_id,
+      });
     }
-  }, []);
-
-
+  }, [data]);
   const handleChange = (e) => {
     setAsset({ ...asset, [e.target.name]: e.target.value });
   };
@@ -49,9 +65,10 @@ const AssetForm = () => {
       }
       
     if (params.id) {
-        updateAsset(asset);
-        alert("Asset edited successfully!!");
-        navigate("/");
+      confirm("sure you want to edit?")&&
+      updateAsset(asset);
+      alert("Asset edited successfully!!");
+      navigate("/");
     } else {
         createAsset(asset)      
         alert("Asset added successfully!!");
@@ -73,6 +90,29 @@ const AssetForm = () => {
           p={40}
         >
           <form onSubmit={handleSubmit}>
+          {params.id ? (
+              <>
+                <FormLabel mt={10}>Asset Id</FormLabel>
+                <Input
+                  placeholder="Asset Id"
+                  onChange={handleChange}
+                  type="number"
+                  value={asset.asset_id}
+                  name="asset_id"
+                  disabled
+                />
+              </>
+            ) : (
+              <>
+                <Input
+                  placeholder="Asset Id"
+                  onChange={handleChange}
+                  type="hidden"
+                  value={asset.asset_id}
+                  name="asset_id"
+                />
+              </>
+            )}
             <FormLabel mt={10}>Name</FormLabel>
             <Input
               placeholder="Name"
@@ -137,7 +177,7 @@ const AssetForm = () => {
                 bg="blueviolet"
                 type="submit"
               >
-                Agregar
+                {params.id ? <p>Edit</p> : <p>Create</p>}
               </Button>
               <Button
                 borderRadius={15}
@@ -146,7 +186,7 @@ const AssetForm = () => {
                 bg="yellow"
                 onClick={handleCancel}
               >
-                Salir
+                Cancel
               </Button>
             </HStack>
             <HStack mt={20}></HStack>

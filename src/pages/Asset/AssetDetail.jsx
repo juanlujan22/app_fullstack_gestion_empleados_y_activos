@@ -16,22 +16,23 @@ import {
 const EmployeeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const employeesList = useSelector((store) => store.employees);
+  const assetsList = useSelector((store) => store.assets);
 
-  const findEmpl = employeesList.find((empl) => empl.employee_id == id);
+  const findAsset = assetsList.find((asset) => asset.asset_id == id);
  
   const {
-    employee_id,
-    first_name,
-    last_name,
-    cuit,
-    team_id,
-    join_date,
-    rol
-  } = findEmpl;
+    asset_id,
+    name,
+    type,
+    code,
+    marca,
+    description,
+    purchase_date,
+    employee_id
+  } = findAsset;
 
-  const handlerEdit = () => {
-    navigate(`/edit/${employee_id}`);
+  const handleEdit = () => {
+    navigate(`/edit-asset/${asset_id}`);
   };
 
   const handleCancel = () => {
@@ -52,17 +53,17 @@ const EmployeeDetail = () => {
         >
           <CardHeader>
             <Heading size="md">
-              Name: {first_name},
-              <br />
-              Last name: {last_name}
+             Name:{name}
             </Heading>
           </CardHeader>    
           <CardBody>
-            <Text> cuit: {cuit}</Text>
-            <Text> team id: {team_id}</Text>
-            <Text> join date:{join_date}</Text>
-            <Text> rol: {rol} </Text>
-            <Text> employee id: {employee_id} </Text>
+            <Text > Asset Id: {asset_id}  </Text>
+            <Text>  Type: {type}   </Text>
+            <Text> Code: {code} </Text>
+            <Text> Marca: {marca} </Text>
+            <Text> Description: {description}</Text>
+            <Text> Purchase Date:{purchase_date}  </Text>
+            <Text> Employee Id: {employee_id}  </Text>
           </CardBody>
           <CardFooter justifyContent="center">
             <Button
@@ -70,7 +71,7 @@ const EmployeeDetail = () => {
               bg="blueviolet"
               borderRadius={15}
               w={100} p="20" m="20"
-              onClick={handlerEdit}
+              onClick={handleEdit}
             >
               Edit
             </Button>
@@ -80,7 +81,6 @@ const EmployeeDetail = () => {
               w={100} p="20" m="20"
               onClick={handleCancel}
             >
-
               Cancel
             </Button>
           </CardFooter>
