@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {useCreateEmployeeMutation, useUpdateEmployeeMutation} from '../../api/employeesApi'
+import {useCreateEmployeeMutation, useUpdateEmployeeMutation, useGetEmployeeByIdQuery} from '../../api/employeesApi'
 import {
   FormControl,
   FormLabel,
@@ -17,13 +16,19 @@ const EmployeeForm = () => {
   const params = useParams();
   
   const [createEmployee] = useCreateEmployeeMutation()
-  // const getEmployeeById= useGetEmployeeByIdQuery()
-  // const dispatch = useDispatch();
-  const emplList = useSelector((state) => state.employees);
-  
+  const [updateEmployee] = useUpdateEmployeeMutation();
+
+  const {data, isSuccess}= useGetEmployeeByIdQuery(parseInt(params.id))
   // const selectedEmployee =  params.id && useSelector(state => state.employees.find(empl => empl.employee_id === params.id))
   //selectedEmployee || 
+//   useEffect(() => {
+//    if (params.id && isSuccess) {
+//      setEmployee(data.data);
+//    }
+//  }, [data]);
+ 
   const [employee, setEmployee] = useState( {
+    employee_id: "",
     first_name: "",
     last_name: "",
     cuit: "",
@@ -33,32 +38,38 @@ const EmployeeForm = () => {
   });
 
   useEffect(() => {
-    if (params.id) {
-      setEmployee(emplList.find((empl) => empl.employee_id === params.id));
+    if (params.id && isSuccess && data && data.data && data.data.join_date) {
+      setEmployee({
+        ...employee,
+        employee_id: data.data.employee_id,
+        first_name: data.data.first_name,
+        last_name: data.data.last_name,
+        cuit: data.data.cuit,
+        team_id: data.data.team_id,
+        join_date: new Date(data.data.join_date).toISOString().slice(0, 10),
+        rol:data.data.rol
+      });
     }
-  }, []);
-
-  // useEffect(() => {
-  //   if (params.id) {
-  //     console.log(getEmployeeById(params.id))
-  //   }
-  // }, []);
-
+  }, [data]);
+ 
   const handleChange = (e) => {
     setEmployee({ ...employee, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!employee.first_name || !employee.last_name || !employee.cuit || !employee.team_id || !employee.join_date || !employee.rol) {
+      alert("fields cannot be empty");
+      return;
+    }
     if (params.id) {
-      useUpdateEmployeeMutation(employee);
+      updateEmployee(employee)
       alert("Employee edited successfully!!");
-      navigate("/");
     } else {
       createEmployee(employee)      
       alert("Employee added successfully!!");
-      navigate("/");
     }
+    navigate("/");
   };
   const handleCancel = () => {
     navigate("/");
@@ -75,6 +86,24 @@ const EmployeeForm = () => {
           p={40}
         >
           <form onSubmit={handleSubmit}>
+          {params.id ? (<> 
+          <FormLabel mt={10}>Employee Id</FormLabel>
+            <Input
+              placeholder="Employee Id"
+              onChange={handleChange}
+              type="number"
+              value={employee.employee_id}
+              name="employee_id"
+              disabled
+            /></>) : (<> 
+            <Input
+              placeholder="Employee Id"
+              onChange={handleChange}
+              type="hidden"
+              value={employee.employee_id}
+              name="employee_id"
+            /></>)
+             }
             <FormLabel mt={10}>First Name</FormLabel>
             <Input
               placeholder="First Name"
@@ -131,7 +160,7 @@ const EmployeeForm = () => {
                 bg="blueviolet"
                 type="submit"
               >
-                Agregar
+                {params.id? <p>Edit</p> : <p>Create</p> }
               </Button>
               <Button
                 borderRadius={15}
