@@ -6,33 +6,34 @@ export const employeesSlice = createSlice({
   name: "EMPLOYEES",
   initialState,
   reducers: {
+      //reducer para obtener lista de empleados del server
      getEmployees: (state, action) => {
-      // filtro para empleados repetidos
+      // se realiza filtro para id de empleados, para no subir empleados repetidos al store
       const newEmployees = action.payload.data.filter(employee => !state.
         some(existingEmployee => existingEmployee.employee_id === employee.employee_id));
       state.push(...newEmployees);
     },
+
     editEmploye: (state, action) => {
       const {
+        employee_id,
         first_name,
         last_name,
-        phone_number,
-        email,
-        hire_date,
-        salary,
-        commission_pct,
-        employee_id,
+        cuit,
+        team_id,
+        join_date,
+        rol,
       } = action.payload;
       console.log(employee_id);
-      const findEmpl = state.find((empl) => empl.employee_id === employee_id);
+      const findEmpl = state.employees.find((empl) => empl.employee_id === employee_id);
       if (findEmpl) {
+        findEmpl.employee_id = employee_id;
         findEmpl.first_name = first_name;
         findEmpl.last_name = last_name;
-        findEmpl.phone_number = phone_number;
-        findEmpl.email = email;
-        findEmpl.hire_date = hire_date;
-        findEmpl.salary = salary;
-        findEmpl.commission_pct = commission_pct;
+        findEmpl.cuit = cuit;
+        findEmpl.team_id = team_id;
+        findEmpl.join_date = join_date;
+        findEmpl.rol = rol;
       }
     },
 }})

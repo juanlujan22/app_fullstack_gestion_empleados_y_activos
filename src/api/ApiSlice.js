@@ -1,14 +1,20 @@
 //import de fetchBaseQuery, para hacer peticiones no manuales
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-//aca se definen las funciones de peticiones http selectedEmployee
-export const employeesApi = createApi({
-  reducerPath: 'employeesApi',
+//definicion de las funciones de peticiones http
+export const ApiSlice = createApi({
+  reducerPath: 'ApiSlice',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000' }),
   endpoints: (builder) => ({
     getEmployees: builder.query({
-      query: () => `/api/v1/employees?page=${1}&limit=${20}`,
-      providesTags: ["GetEmployees"], // funcion que actualiza cuando es invocado
+      query: ({ page = 1, limit = 5, firstName = "", lastName = "", cuit = "" }) => {
+        let queryString = `?page=${page}&limit=${limit}`;
+        if (firstName) queryString += `&first_name=${firstName}`;
+        if (lastName) queryString += `&last_name=${lastName}`;
+        if (cuit) queryString += `&cuit=${cuit}`;
+        return `/api/v1/employees${queryString}`;
+      },
+      providesTags: ["GetEmployees"],
     }),
     getEmployeeById: builder.query({
       query: (id) => `/api/v1/employees/${id}`,
@@ -44,7 +50,7 @@ export const employeesApi = createApi({
       providesTags: ["GetAssets"],
     }),
     getAssetById: builder.query({
-      query: (id) => `/api/v1/assets/${id}`,
+      query: (asset_id) => `/api/v1/assets/${asset_id}`,
     }),
     createAsset: builder.mutation({
       query: (asset) => ({
@@ -56,7 +62,7 @@ export const employeesApi = createApi({
     }),
     updateAsset: builder.mutation({
       query: (asset) => ({
-        url: `/api/v1/assets/update/${asset.id}`,
+        url: `/api/v1/assets/update/${asset.asset_id}`,
         method: 'PUT',
         body: asset,
       }),
@@ -85,4 +91,4 @@ export const {
   useGetAssetByIdQuery,
   useCreateAssetMutation,
   useDeleteAssetMutation,
-  useUpdateAssetMutation } = employeesApi;
+  useUpdateAssetMutation } = ApiSlice;

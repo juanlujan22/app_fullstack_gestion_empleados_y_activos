@@ -7,6 +7,16 @@ import EmployeeForm from "./pages/Employee/EmployeeForm";
 import AssetForm from "./pages/Asset/AssetForm";
 import AssetDetail from "./pages/Asset/AssetDetail"
 import "./App.css";
+import { Center } from "@chakra-ui/react";
+
+const ErrorNotFound = ()=>{
+  return (
+  <>
+    <Center>
+      <h1>Page Not Found, 404!!</h1>
+    </Center> 
+  </>)
+}
 
 function App() {
   return (
@@ -21,7 +31,7 @@ function App() {
           <Route path="/create-asset" element={<AssetForm />} />
           <Route path="/edit/:id" element={<EmployeeForm />} />
           <Route path="/edit-asset/:id" element={<AssetForm />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<ErrorNotFound/>} />
         </Routes>
       </BrowserRouter>
     </div>

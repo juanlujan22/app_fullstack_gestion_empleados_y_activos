@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { employeesApi } from '../api/employeesApi';
+import { ApiSlice } from '../api/ApiSlice';
 import employeesReducer from '../features/employeeSlice';
 import assetsReducer from '../features/assetSlice';
 
@@ -7,9 +7,9 @@ export const store = configureStore({
   reducer: {
     employees: employeesReducer,
     assets: assetsReducer,
-    [employeesApi.reducerPath]: employeesApi.reducer,
+    [ApiSlice.reducerPath]: ApiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => //middleware de employeesApi que administra la state con solicitudes a la api
-    getDefaultMiddleware().concat(employeesApi.middleware), 
+    getDefaultMiddleware().concat(ApiSlice.middleware), 
 });
 

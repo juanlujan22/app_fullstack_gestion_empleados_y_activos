@@ -1,4 +1,4 @@
-import { useGetAssetsQuery, useDeleteAssetMutation } from "../../api/employeesApi";
+import { useGetAssetsQuery, useDeleteAssetMutation } from "../../api/ApiSlice";
 import {getAssets} from "../../features/assetSlice"
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";

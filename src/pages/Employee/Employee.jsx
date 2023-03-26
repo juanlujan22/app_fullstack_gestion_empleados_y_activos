@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useDeleteEmployeeMutation } from "../../api/employeesApi";
-
+import { useDeleteEmployeeMutation } from "../../api/ApiSlice";
 import {
+  HStack,
   IconButton,
   Table,
   Thead,
@@ -13,7 +13,7 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon, Search2Icon } from "@chakra-ui/icons";
-const Employee = ({ empl }) => {
+const Employee = ({ empl, totalPages }) => {
   const navigate = useNavigate();
   const [deleteEmployee] = useDeleteEmployeeMutation() // extraigo una funcion, que la nombro como "deleteEmployee"
   
@@ -34,9 +34,9 @@ const Employee = ({ empl }) => {
 
   return (
     <div className="table"> 
-    <Center>
-    <h2>TABLA DE EMPLEADOS</h2>
-    </Center>
+    <HStack className="table">
+      <p>Total Pages: {totalPages}</p>
+    </HStack>
     <TableContainer  border="solid 1px gray" justifyContent="center">
             <Table >
             <Thead>

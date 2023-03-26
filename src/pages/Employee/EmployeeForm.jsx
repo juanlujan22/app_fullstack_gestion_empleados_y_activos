@@ -5,7 +5,7 @@ import {
   useCreateEmployeeMutation,
   useUpdateEmployeeMutation,
   useGetEmployeeByIdQuery,
-} from "../../api/employeesApi";
+} from "../../api/ApiSlice";
 import {
   FormControl,
   FormLabel,

@@ -1,34 +1,40 @@
-import { VStack, Button, Center } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Employee from "../pages/Employee/Employee";
-import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {getEmployees}from "../features/employeeSlice"
-//import del hook de apiSlice
-import { useGetEmployeesQuery } from "../api/employeesApi";
-import AssetListContainer from "./Asset/AssetsListContainer"
+import { getEmployees } from "../features/employeeSlice";
+import { useGetEmployeesQuery } from "../api/ApiSlice";
+import AssetListContainer from "./Asset/AssetsListContainer";
+import { useNavigate, NavLink } from "react-router-dom";
+import { VStack, HStack, Button, Center } from "@chakra-ui/react";
 
 const EmployeesListContainer = () => {
+  const navigate = useNavigate()
+  //hook dispatch
+  const dispatch = useDispatch();
+  // const { data, isError, isLoading, isSuccess, error } = useGetEmployeesQuery();
+  const [filter, setFilter] = useState({ firstName: '', lastName: '', cuit: '' });
 
-   const dispatch = useDispatch()
+  //hook para servicio get, que recibe parametros de filtrado
+  const { data, isError, isLoading, isSuccess, error } = useGetEmployeesQuery(filter);
 
-   const {data, isError, isLoading, isSuccess, error}= useGetEmployeesQuery() 
+  const handleChange = (e) => {
+    setFilter({ ...filter, [e.target.name]: e.target.value });
+  };
 
-   const AddEmployeeButton = () => (
-    <NavLink to={"/create-employee"}>
-      <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
-        Add Employee
-      </Button>
-    </NavLink>
-  );
-  
-  useEffect(() => { 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+  //useEffect escucha a data y si el resultado es succes, realiza dispatch de lista de empleados.
+
+  useEffect(() => {
     if (isSuccess) {
-      dispatch(getEmployees(data))
+      // dispatch de toda la lista de empleados que llegan del servidor
+      dispatch(getEmployees(data));
     }
   }, [data]);
 
-
+  //manejo de estados del GetEmployees
   if (isLoading) {
     return (
       <Center>
@@ -42,11 +48,44 @@ const EmployeesListContainer = () => {
       </Center>
     );
   }
+  // funcion que genera boton de agregar empleado
+  const AddEmployeeButton = () => (
+    <NavLink to={"/create-employee"}>
+      <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
+        Add Employee
+      </Button>
+    </NavLink>
+  );
+  
+  
+  //funcion para Botones de Paginado
+  const BtnPaginado = ()=>
+(  <HStack className="table">
+    <button onClick={handlePrevPage}>Anterior</button>
+    <p>Página {page} de {totalPages}</p>
+    <button onClick={handleNextPage}>Siguiente</button>
+  </HStack>)
 
+  //funcion formulario de filtrado
+    const FormFilter =()=>( <div className="table">
+    <Center>
+    <h2>TABLA DE EMPLEADOS</h2>
+    </Center> 
+    <HStack>
+    <form onSubmit={handleSubmit}>
+    <input type="text" name="firstName"  value={filter.firstName} placeholder="firstName" onChange={handleChange} />
+    <input type="text" name="lastName" value={filter.lastName} placeholder="Apellido" onChange={handleChange} />
+    <input type="text" name="cuit" value={filter.cuit} placeholder="Cuit" onChange={handleChange} />
+    <button type="submit">Buscar</button>
+   </form>
+    </HStack>
+  </div>)
+  
+  //renderizado
   return (
     <>
       <VStack mt={10}>
-       <AddEmployeeButton/>
+        <AddEmployeeButton />
       </VStack>
       {data.length === 0 ? (
         <Center>
@@ -54,8 +93,9 @@ const EmployeesListContainer = () => {
         </Center>
       ) : (
         <>
-        <Employee empl={data.data} />
-        <AssetListContainer />
+          <FormFilter />
+          <Employee empl={data.data} totalPages={data.totalPages} />
+          <AssetListContainer />
         </>
       )}
     </>

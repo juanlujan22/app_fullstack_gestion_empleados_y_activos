@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {useCreateAssetMutation, useUpdateAssetMutation, useGetAssetByIdQuery} from '../../api/employeesApi'
+import {useCreateAssetMutation, useUpdateAssetMutation, useGetAssetByIdQuery} from '../../api/ApiSlice'
 import {
   FormControl,
   FormLabel,
@@ -18,14 +18,22 @@ const AssetForm = () => {
   const [createAsset] = useCreateAssetMutation()
 
   const { data, isSuccess } = useGetAssetByIdQuery(parseInt(params.id));
-  console.log(objUpdate)
-  console.log(objUpdate.isError)
-  console.log(updateAsset)
+  console.log(objUpdate) /* 
+  isError  :  false
+  isLoading  :   false
+  isSuccess  :   false
+  isUninitialized:  true
+  originalArgs :  undefined
+  status : "uninitialized"*/
+  console.log(objUpdate.isError) //false
 
-
-
-
-
+  console.log(updateAsset) /* 
+  ƒ (arg) {
+    var promise2 = dispatch(initiate(arg, { fixedCacheKey }));
+    setPromise(promise2);
+    return promise2;
+  }
+AssetForm.jsx:40  */
   
   const [asset, setAsset] = useState( {
     asset_id: "",
@@ -37,7 +45,7 @@ const AssetForm = () => {
     purchase_date: "",
     employee_id:"",
   });
-  console.log(asset)
+  
   useEffect(() => {
     if (params.id && isSuccess && data && data.data && data.data.purchase_date) {
       setAsset({
@@ -60,14 +68,14 @@ const AssetForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!asset.name || !asset.type || !asset.code || !asset.marca || !asset.description || !asset.purchase_date) {
-        alert("Los campos requeridos deben ser completados");
+        alert("all fields must be completed");
         return;
       }
       
     if (params.id) {
       confirm("sure you want to edit?")&&
       updateAsset(asset);
-      alert("Asset edited successfully!!");
+      isSuccess&&alert("Asset edited successfully!!");
       navigate("/");
     } else {
         createAsset(asset)      
