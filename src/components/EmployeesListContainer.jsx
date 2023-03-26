@@ -56,15 +56,6 @@ const EmployeesListContainer = () => {
       </Button>
     </NavLink>
   );
-  
-  
-  //funcion para Botones de Paginado
-  const BtnPaginado = ()=>
-(  <HStack className="table">
-    <button onClick={handlePrevPage}>Anterior</button>
-    <p>Página {page} de {totalPages}</p>
-    <button onClick={handleNextPage}>Siguiente</button>
-  </HStack>)
 
   //funcion formulario de filtrado
     const FormFilter =()=>( <div className="table">

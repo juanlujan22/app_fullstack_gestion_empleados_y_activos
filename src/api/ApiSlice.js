@@ -9,9 +9,9 @@ export const ApiSlice = createApi({
     getEmployees: builder.query({
       query: ({ page = 1, limit = 5, firstName = "", lastName = "", cuit = "" }) => {
         let queryString = `?page=${page}&limit=${limit}`;
-        if (firstName) queryString += `&first_name=${firstName}`;
-        if (lastName) queryString += `&last_name=${lastName}`;
-        if (cuit) queryString += `&cuit=${cuit}`;
+        firstName ? queryString += `&first_name=${firstName}` : null;
+        lastName ? queryString += `&last_name=${lastName}`: null;
+        cuit ? queryString += `&cuit=${cuit}`: null;
         return `/api/v1/employees${queryString}`;
       },
       providesTags: ["GetEmployees"],
