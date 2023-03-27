@@ -1,8 +1,10 @@
 nav {
-  background-color: white ;
-  color: white;
  background-image: 
-    url("https://www.shutterstock.com/image-vector/vector-black-background-template-illustration-260nw-1276451890.jpg"); 
+    /* linear-gradient(180deg, rgba(0,0,9,1) 0%, rgba(145,0,255,1) 99%), */
+    url("https://www.shutterstock.com/image-vector/vector-black-background-template-illustration-260nw-1276451890.jpg");  
 }
 
-nav h1 {color:blueviolet}
+nav h1{
+  color: aliceblue;
+}
+
