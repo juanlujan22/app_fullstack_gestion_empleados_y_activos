@@ -18,7 +18,7 @@ const EmployeeDetail = () => {
   const navigate = useNavigate();
   // hook para traer el estado Redux assets, que contiene a todos los assets.
   const assetsList = useSelector((store) => store.assets);
-  // busqueda de asset en el estado, segun id que quiero ver en detalle
+  // busqueda de asset_id en el estado redux asset, que quiero ver en detalle.
   const findAsset = assetsList.find((asset) => asset.asset_id == id);
   const {
     asset_id,
@@ -30,12 +30,10 @@ const EmployeeDetail = () => {
     purchase_date,
     employee_id,
   } = findAsset;
-
   // handles de botones para editar o cancelar
   const handleEdit = () => {
     navigate(`/edit-asset/${asset_id}`);
   };
-
   const handleCancel = () => {
     navigate("/");
   };

@@ -87,6 +87,7 @@ const EmployeeForm = () => {
       <Center> <h1> Employee Form </h1> </Center>
       <VStack p={7} justifyContent="center">
         <FormControl
+          isRequired
           borderRadius={10}
           bgColor="lavender"
           border="solid blueviolet"
@@ -119,7 +120,7 @@ const EmployeeForm = () => {
             <FormLabel mt={10}>First Name</FormLabel>
             <Input
               placeholder="First Name"
-              isRequired
+              
               onChange={handleChange}
               type="text"
               value={employee.first_name}
@@ -128,7 +129,7 @@ const EmployeeForm = () => {
             <FormLabel mt={10}>Last Name</FormLabel>
             <Input
               placeholder="Last Name"
-              isRequired
+              
               onChange={handleChange}
               type="text"
               value={employee.last_name}
@@ -137,7 +138,7 @@ const EmployeeForm = () => {
             <FormLabel mt={10}>Cuit</FormLabel>
             <Input
               placeholder="Cuit"
-              isRequired
+              
               onChange={handleChange}
               type="number"
               value={employee.cuit}
@@ -146,7 +147,7 @@ const EmployeeForm = () => {
             <FormLabel mt={10}>Team Id</FormLabel>
             <Input
               placeholder="Team Id"
-              isRequired
+              
               onChange={handleChange}
               type="number"
               value={employee.team_id}
@@ -155,7 +156,7 @@ const EmployeeForm = () => {
             <FormLabel mt={10}>Join Date</FormLabel>
             <Input
               placeholder="Join date"
-              isRequired
+              
               onChange={handleChange}
               type="date"
               value={employee.join_date}
@@ -164,7 +165,7 @@ const EmployeeForm = () => {
             <FormLabel mt={10}>Rol</FormLabel>
             <Input
               placeholder="Rol"
-              isRequired
+              
               onChange={handleChange}
               type="text"
               value={employee.rol}

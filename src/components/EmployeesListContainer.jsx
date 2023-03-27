@@ -56,11 +56,11 @@ const EmployeesListContainer = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      navigate("/");
     };
 
   //funcion formulario de filtrado
-    const FormFilter =()=>( <div className="table">
+    const FormFilter =()=>( 
+    <div className="table">
     <Center>
     <h2>TABLA DE EMPLEADOS</h2>
     </Center> 
