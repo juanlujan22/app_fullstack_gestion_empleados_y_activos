@@ -7,7 +7,7 @@ export const ApiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000' }),
   endpoints: (builder) => ({
     getEmployees: builder.query({
-      query: ({ page = 1, limit = 20, firstName = "", lastName = "", cuit = "" }) => {
+      query: ({ page = 1, limit = 5, firstName = "", lastName = "", cuit = "" }) => {
         let queryString = `?page=${page}&limit=${limit}`;
         firstName ? queryString += `&first_name=${firstName}` : null;
         lastName ? queryString += `&last_name=${lastName}`: null;
