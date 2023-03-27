@@ -36,9 +36,9 @@ const AssetListContainer = () => {
 
   return (
     <>
-      <Center>
+      <Center marginTop={20}>
         {" "}
-        <h2> Asset List </h2>{" "}
+        <h2> Asset of Employees List </h2>{" "}
       </Center>
       <Center>
         {" "}

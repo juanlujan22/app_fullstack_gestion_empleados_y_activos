@@ -11,3 +11,10 @@
   justify-content: center;
 }
 
+div {
+  margin-bottom: 10px;
+}
+
+h2 {
+  text-decoration: underline
+}
