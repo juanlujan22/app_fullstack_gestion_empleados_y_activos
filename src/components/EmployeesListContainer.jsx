@@ -3,7 +3,7 @@ import Employee from "../pages/Employee/Employee";
 import { useDispatch } from "react-redux";
 import { getEmployees } from "../features/employeeSlice";
 import { useGetEmployeesQuery } from "../api/ApiSlice";
-import AssetListContainer from "./Asset/AssetsListContainer";
+import AssetListContainer from "./AssetsListContainer";
 import { useNavigate, NavLink } from "react-router-dom";
 import { VStack, HStack, Button, Center } from "@chakra-ui/react";
 
@@ -17,16 +17,7 @@ const EmployeesListContainer = () => {
   //hook para servicio get, que recibe parametros de filtrado
   const { data, isError, isLoading, isSuccess, error } = useGetEmployeesQuery(filter);
 
-  const handleChange = (e) => {
-    setFilter({ ...filter, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate("/");
-  };
   //useEffect escucha a data y si el resultado es succes, realiza dispatch de lista de empleados.
-
   useEffect(() => {
     if (isSuccess) {
       // dispatch de toda la lista de empleados que llegan del servidor
@@ -44,7 +35,7 @@ const EmployeesListContainer = () => {
   } else if (isError) {
     return (
       <Center>
-        <div>Error {error.message}</div>
+        <h1>Error {error.message}</h1>
       </Center>
     );
   }
@@ -67,11 +58,21 @@ const EmployeesListContainer = () => {
     <input type="text" name="firstName"  value={filter.firstName} placeholder="firstName" onChange={handleChange} />
     <input type="text" name="lastName" value={filter.lastName} placeholder="Apellido" onChange={handleChange} />
     <input type="text" name="cuit" value={filter.cuit} placeholder="Cuit" onChange={handleChange} />
-    <button type="submit">Buscar</button>
+    <button type="submit">Apply Filter</button>
    </form>
     </HStack>
   </div>)
+
+    //handle de formulario de filtro
+    const handleChange = (e) => {
+      setFilter({ ...filter, [e.target.name]: e.target.value });
+    };
   
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      navigate("/");
+    };
+
   //renderizado
   return (
     <>

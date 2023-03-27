@@ -11,30 +11,26 @@ export const assetSlice = createSlice({
       const newAssets = action.payload.data.filter(asset => !state.some(existingAsset => existingAsset.asset_id === asset.asset_id));
       state.push(...newAssets);
     },
-    addAssets: (state, action) => {
-      return [...state, action.payload];
-    },
     editEmploye: (state, action) => {
       const {
-        first_name,
-        last_name,
-        phone_number,
-        email,
-        hire_date,
-        salary,
-        commission_pct,
         employee_id,
+        name,
+        type,
+        code,
+        marca,
+        description,
+        purchase_date,
       } = action.payload;
       console.log(employee_id);
       const findEmpl = state.find((empl) => empl.employee_id === employee_id);
       if (findEmpl) {
-        findEmpl.first_name = first_name;
-        findEmpl.last_name = last_name;
-        findEmpl.phone_number = phone_number;
-        findEmpl.email = email;
-        findEmpl.hire_date = hire_date;
-        findEmpl.salary = salary;
-        findEmpl.commission_pct = commission_pct;
+        findEmpl. employee_id =  employee_id;
+        findEmpl.name = name;
+        findEmpl.type = type;
+        findEmpl.code = code;
+        findEmpl.marca = marca;
+        findEmpl.description = description;
+        findEmpl.purchase_date = purchase_date;
       }
     },
   },
