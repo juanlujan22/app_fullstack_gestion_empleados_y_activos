@@ -1,7 +1,7 @@
-//import de fetchBaseQuery, para hacer peticiones no manuales
+//imports de funciones redux toolkit, que permite crear y hacer peticiones http
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-//definicion de las funciones de peticiones http
+//definicion de ApiSlice, donde se definen y manejan las peticiones http a los distintos endpoints.
 export const ApiSlice = createApi({
   reducerPath: 'ApiSlice',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000' }),
@@ -79,7 +79,7 @@ export const ApiSlice = createApi({
 });
 
 
-// Hook para poder solicitar datos
+// expor de Hook para poder solicitar datos
 export const { 
   useGetEmployeesQuery, 
   useGetEmployeeByIdQuery,

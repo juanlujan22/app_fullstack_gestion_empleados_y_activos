@@ -1,23 +1,20 @@
 // imports
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import NavBar from "./components/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavBar from "./common/Navbar";
 import EmployeesListContainer from "./components/EmployeesListContainer";
 import EmployeeDetail from "./pages/Employee/EmployeeDetail";
 import EmployeeForm from "./pages/Employee/EmployeeForm";
 import AssetForm from "./pages/Asset/AssetForm";
-import AssetDetail from "./pages/Asset/AssetDetail"
+import AssetDetail from "./pages/Asset/AssetDetail";
 import "./App.css";
 import { Center } from "@chakra-ui/react";
-
-const ErrorNotFound = ()=>{
-  return (
-  <>
-    <Center>
-      <h1>Page Not Found, 404!!</h1>
-    </Center> 
-  </>)
-}
-
+//funcion de render de error, en url que no existan
+const ErrorNotFound = () => (
+  <Center>
+    <h1>Page Not Found, 404!!</h1>
+  </Center>
+);
+// montado de app, con routes a los distintos componentes crud
 function App() {
   return (
     <div className="App">
@@ -31,7 +28,7 @@ function App() {
           <Route path="/create-asset" element={<AssetForm />} />
           <Route path="/edit/:id" element={<EmployeeForm />} />
           <Route path="/edit-asset/:id" element={<AssetForm />} />
-          <Route path="*" element={<ErrorNotFound/>} />
+          <Route path="*" element={<ErrorNotFound />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -8,10 +8,10 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { VStack, HStack, Button, Center } from "@chakra-ui/react";
 
 const EmployeesListContainer = () => {
+  // hooks
   const navigate = useNavigate()
-  //hook dispatch
+  // hook dispatch, para cargar data en estado redux
   const dispatch = useDispatch();
-  // const { data, isError, isLoading, isSuccess, error } = useGetEmployeesQuery();
   const [filter, setFilter] = useState({ firstName: '', lastName: '', cuit: '' });
 
   //hook para servicio get, que recibe parametros de filtrado
@@ -48,6 +48,17 @@ const EmployeesListContainer = () => {
     </NavLink>
   );
 
+
+    //handle de formulario de filtro
+    const handleChange = (e) => {
+      setFilter({ ...filter, [e.target.name]: e.target.value });
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      navigate("/");
+    };
+
   //funcion formulario de filtrado
     const FormFilter =()=>( <div className="table">
     <Center>
@@ -63,17 +74,7 @@ const EmployeesListContainer = () => {
     </HStack>
   </div>)
 
-    //handle de formulario de filtro
-    const handleChange = (e) => {
-      setFilter({ ...filter, [e.target.name]: e.target.value });
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      navigate("/");
-    };
-
-  //renderizado
+  //montado de formulario
   return (
     <>
       <VStack mt={10}>

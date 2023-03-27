@@ -1,21 +1,20 @@
 import { useGetAssetsQuery } from "../api/ApiSlice";
-import {getAssets} from "../features/assetSlice"
+import { getAssets } from "../features/assetSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {  NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Asset from "../pages/Asset/Asset";
-import {
-  Button,
-  Center,
-} from "@chakra-ui/react";
+import { Button, Center } from "@chakra-ui/react";
+
 const AssetListContainer = () => {
   //hook de apiSlice para obtener todos los Assets
   const { data, isError, isLoading, error, isSuccess } = useGetAssetsQuery();
-  const dispatch = useDispatch()
+  // hook dispatch, para cargar data en estado redux
+  const dispatch = useDispatch();
 
-  useEffect(() => { 
+  useEffect(() => {
     if (isSuccess) {
-      dispatch(getAssets(data))
+      dispatch(getAssets(data));
     }
   }, [data]);
 
@@ -25,9 +24,8 @@ const AssetListContainer = () => {
         <h1>Loading...</h1>
       </div>
     );
-  else if (isError) return <div> Error {error.message} </div>;
-  
- 
+  else if (isError) return <h1> Error: {error.message} </h1>;
+
   const AddAssetButton = () => (
     <NavLink to={"/create-asset"}>
       <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
@@ -36,16 +34,23 @@ const AssetListContainer = () => {
     </NavLink>
   );
 
-
   return (
     <>
-      <Center> <h2> Asset List </h2> </Center>
-      <Center>  <AddAssetButton />  </Center>
-      {data.data.length === 0 
-      ? (<Box display="flex" justifyContent="center">
+      <Center>
+        {" "}
+        <h2> Asset List </h2>{" "}
+      </Center>
+      <Center>
+        {" "}
+        <AddAssetButton />{" "}
+      </Center>
+      {data.data.length === 0 ? (
+        <Box display="flex" justifyContent="center">
           <h2> No Hay Assets Disponibles </h2>
-        </Box>) 
-      : <Asset asset={data.data} />}
+        </Box>
+      ) : (
+        <Asset asset={data.data} />
+      )}
     </>
   );
 };

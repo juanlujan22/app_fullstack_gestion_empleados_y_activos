@@ -14,9 +14,12 @@ import { useDeleteAssetMutation } from "../../api/ApiSlice";
 import { DeleteIcon, EditIcon, Search2Icon } from "@chakra-ui/icons";
 
 const Asset = ({ asset }) => {
+  //hooks
   const navigate = useNavigate();
+  // hook de apiSlice del que extraigo y nombro una funcion, para eliminar
   const [deleteAsset] = useDeleteAssetMutation();
 
+  //handle de botones, para redireccionar a edicion, detalle o realizar eliminación.
   const handleEdit = (id) => {
     navigate(`/edit-asset/${id}`);
   };
@@ -31,7 +34,7 @@ const Asset = ({ asset }) => {
       alert(`the Asset was removed!!`);
     }
   };
-
+  // montado de tabla de assets
   return (
     <div>
       <Center>

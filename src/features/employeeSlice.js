@@ -13,7 +13,7 @@ export const employeesSlice = createSlice({
         some(existingEmployee => existingEmployee.employee_id === employee.employee_id));
       state.push(...newEmployees);
     },
-
+    // reducer de edicion, el cual no implemente, pero quedo planteado hasta evacuar duda.
     editEmploye: (state, action) => {
       const {
         employee_id,
@@ -24,7 +24,6 @@ export const employeesSlice = createSlice({
         join_date,
         rol,
       } = action.payload;
-      console.log(employee_id);
       const findEmpl = state.employees.find((empl) => empl.employee_id === employee_id);
       if (findEmpl) {
         findEmpl.employee_id = employee_id;

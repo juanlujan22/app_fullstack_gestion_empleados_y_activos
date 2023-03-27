@@ -14,15 +14,16 @@ import {
   VStack,
   HStack,
 } from "@chakra-ui/react";
+
 const EmployeeForm = () => {
+  // hooks
   const navigate = useNavigate();
   const params = useParams();
-
+  // hooks creados en apiSlice,  para Creacion, Edicion y Traer data de un empleado segun id 
   const [createEmployee] = useCreateEmployeeMutation();
   const [updateEmployee] = useUpdateEmployeeMutation();
-
   const { data, isSuccess } = useGetEmployeeByIdQuery(parseInt(params.id));
-
+  // hook de estado react
   const [employee, setEmployee] = useState({
     employee_id: "",
     first_name: "",
@@ -32,9 +33,9 @@ const EmployeeForm = () => {
     join_date: "",
     rol: "",
   });
-
+  // hook que carga datos de empleado, si detecta params en modo edicion
   useEffect(() => {
-    if (params.id && isSuccess && data && data.data && data.data.join_date) {
+    if (params.id && isSuccess && data.data && data.data.join_date) {
       setEmployee({
         ...employee,
         employee_id: data.data.employee_id,
@@ -48,6 +49,7 @@ const EmployeeForm = () => {
     }
   }, [data]);
 
+  //handles de formulario
   const handleChange = (e) => {
     setEmployee({ ...employee, [e.target.name]: e.target.value });
   };
@@ -78,6 +80,7 @@ const EmployeeForm = () => {
     navigate("/");
   };
 
+  //montado de formulario
   return (
     <>
       <VStack p={7} justifyContent="center">
@@ -168,7 +171,9 @@ const EmployeeForm = () => {
             <HStack mt={20}>
               <Button
                 borderRadius={15}
-                w={100} p="9" m="15"
+                w={100}
+                p="9"
+                m="15"
                 bg="blueviolet"
                 type="submit"
               >
@@ -176,7 +181,9 @@ const EmployeeForm = () => {
               </Button>
               <Button
                 borderRadius={15}
-                w={90} p="23" m="20"
+                w={90}
+                p="23"
+                m="20"
                 bg="orange"
                 onClick={handleCancel}
               >

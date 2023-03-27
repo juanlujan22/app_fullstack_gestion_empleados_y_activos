@@ -6,6 +6,7 @@ export const assetSlice = createSlice({
   name: "ASSETS",
   initialState,
   reducers: {
+    //reducer para obtener lista de assets, de la respuesta que llega del servicio get
     getAssets: (state, action) => {
       // filtro para assets repetidos
       const newAssets = action.payload.data.filter(asset => !state.some(existingAsset => existingAsset.asset_id === asset.asset_id));
@@ -21,7 +22,6 @@ export const assetSlice = createSlice({
         description,
         purchase_date,
       } = action.payload;
-      console.log(employee_id);
       const findEmpl = state.find((empl) => empl.employee_id === employee_id);
       if (findEmpl) {
         findEmpl. employee_id =  employee_id;

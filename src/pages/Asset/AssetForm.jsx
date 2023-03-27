@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {useCreateAssetMutation, useUpdateAssetMutation, useGetAssetByIdQuery} from '../../api/ApiSlice'
+import {
+  useCreateAssetMutation,
+  useUpdateAssetMutation,
+  useGetAssetByIdQuery,
+} from "../../api/ApiSlice";
 import {
   FormControl,
   FormLabel,
@@ -10,32 +14,17 @@ import {
   VStack,
   HStack,
 } from "@chakra-ui/react";
+
 const AssetForm = () => {
-  
+  //hooks
   const navigate = useNavigate();
   const params = useParams();
-  const [updateAsset, objUpdate] = useUpdateAssetMutation()
-  const [createAsset] = useCreateAssetMutation()
-
+  // hooks creados en apiSlice, de servicios crud Edicion, Creación o Traer data de un Asset segun id
+  const [updateAsset] = useUpdateAssetMutation();
+  const [createAsset] = useCreateAssetMutation();
   const { data, isSuccess } = useGetAssetByIdQuery(parseInt(params.id));
-  console.log(objUpdate) /* 
-  isError  :  false
-  isLoading  :   false
-  isSuccess  :   false
-  isUninitialized:  true
-  originalArgs :  undefined
-  status : "uninitialized"*/
-  console.log(objUpdate.isError) //false
-
-  console.log(updateAsset) /* 
-  ƒ (arg) {
-    var promise2 = dispatch(initiate(arg, { fixedCacheKey }));
-    setPromise(promise2);
-    return promise2;
-  }
-AssetForm.jsx:40  */
-  
-  const [asset, setAsset] = useState( {
+  // hook de estado React
+  const [asset, setAsset] = useState({
     asset_id: "",
     name: "",
     type: "",
@@ -43,50 +32,67 @@ AssetForm.jsx:40  */
     marca: "",
     description: "",
     purchase_date: "",
-    employee_id:"",
+    employee_id: "",
   });
-  
+  // hook Effect para carga datos de empleado en estado React, si detecta params p/ realizar edicion
   useEffect(() => {
-    if (params.id && isSuccess && data && data.data && data.data.purchase_date) {
+    if (
+      params.id &&
+      isSuccess &&
+      data &&
+      data.data &&
+      data.data.purchase_date
+    ) {
       setAsset({
         ...asset,
-        asset_id:data.data.asset_id,
+        asset_id: data.data.asset_id,
         name: data.data.name,
         type: data.data.type,
         code: data.data.code,
         marca: data.data.marca,
         description: data.data.description,
-        purchase_date: new Date(data.data.purchase_date).toISOString().slice(0, 10),
+        purchase_date: new Date(data.data.purchase_date)
+          .toISOString()
+          .slice(0, 10),
         employee_id: data.data.employee_id,
       });
     }
   }, [data]);
+
+  // handles para manejo de inputs y estado react
   const handleChange = (e) => {
     setAsset({ ...asset, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!asset.name || !asset.type || !asset.code || !asset.marca || !asset.description || !asset.purchase_date) {
-        alert("all fields must be completed");
-        return;
-      }
-      
+    if (
+      !asset.name ||
+      !asset.type ||
+      !asset.code ||
+      !asset.marca ||
+      !asset.description ||
+      !asset.purchase_date
+    ) {
+      alert("all fields must be completed");
+      return;
+    }
+
     if (params.id) {
-      confirm("sure you want to edit?")&&
-      updateAsset(asset);
-      isSuccess&&alert("Asset edited successfully!!");
+      confirm("sure you want to edit?") && updateAsset(asset);
+      isSuccess && alert("Asset edited successfully!!");
       navigate("/");
     } else {
-        createAsset(asset)      
-        alert("Asset added successfully!!");
-        navigate("/");
+      createAsset(asset);
+      alert("Asset added successfully!!");
+      navigate("/");
     }
   };
   const handleCancel = () => {
     navigate("/");
   };
 
+  // montado del formulario
   return (
     <>
       <VStack p={7} justifyContent="center">
@@ -98,7 +104,7 @@ AssetForm.jsx:40  */
           p={40}
         >
           <form onSubmit={handleSubmit}>
-          {params.id ? (
+            {params.id ? (
               <>
                 <FormLabel mt={10}>Asset Id</FormLabel>
                 <Input

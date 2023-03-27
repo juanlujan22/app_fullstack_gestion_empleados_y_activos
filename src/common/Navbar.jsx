@@ -1,5 +1,6 @@
 import { Heading, HStack } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
+// montado del navbar, cuyo heading es clickeable y lleva al home
 const NavBar = () => {
   return (
     <nav>

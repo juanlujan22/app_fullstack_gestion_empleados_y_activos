@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 import {
   VStack,
   Card,
@@ -14,22 +13,21 @@ import {
 } from "@chakra-ui/react";
 
 const EmployeeDetail = () => {
+  //hooks
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // hook para traer el estado Redux employees, que contiene a todos los empleados.
   const employeesList = useSelector((store) => store.employees);
 
+  // busqueda de empleado en el estado, segun id
   const findEmpl = employeesList.find((empl) => empl.employee_id == id);
- 
-  const {
-    employee_id,
-    first_name,
-    last_name,
-    cuit,
-    team_id,
-    join_date,
-    rol
-  } = findEmpl;
 
+  // destructuring de empleado encontrado
+  const { employee_id, first_name, last_name, cuit, team_id, join_date, rol } =
+    findEmpl;
+
+  // handles de botones Edit y Cancel, del formulario.
   const handlerEdit = () => {
     navigate(`/edit/${employee_id}`);
   };
@@ -37,7 +35,8 @@ const EmployeeDetail = () => {
   const handleCancel = () => {
     navigate("/");
   };
-  
+
+  // montado de la card de vista de detalle
   return (
     <div>
       <VStack mt="20">
@@ -56,7 +55,7 @@ const EmployeeDetail = () => {
               <br />
               Last name: {last_name}
             </Heading>
-          </CardHeader>    
+          </CardHeader>
           <CardBody>
             <Text> cuit: {cuit}</Text>
             <Text> team id: {team_id}</Text>
@@ -69,7 +68,9 @@ const EmployeeDetail = () => {
               disabled="true"
               bg="blueviolet"
               borderRadius={15}
-              w={100} p="20" m="20"
+              w={100}
+              p="20"
+              m="20"
               onClick={handlerEdit}
             >
               Edit
@@ -77,10 +78,11 @@ const EmployeeDetail = () => {
             <Button
               bg="yellow"
               borderRadius={15}
-              w={100} p="20" m="20"
+              w={100}
+              p="20"
+              m="20"
               onClick={handleCancel}
             >
-
               Cancel
             </Button>
           </CardFooter>
