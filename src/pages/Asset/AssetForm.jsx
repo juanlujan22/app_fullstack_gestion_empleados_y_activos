@@ -7,6 +7,7 @@ import {
   useGetAssetByIdQuery,
 } from "../../api/ApiSlice";
 import {
+  Center,
   FormControl,
   FormLabel,
   Input,
@@ -95,7 +96,8 @@ const AssetForm = () => {
   // montado del formulario
   return (
     <>
-      <VStack p={7} justifyContent="center">
+      <Center> <h1> Asset Form </h1> </Center>
+      <VStack m="10" p="10" justifyContent="center">
         <FormControl
           borderRadius={10}
           isRequired
@@ -186,8 +188,6 @@ const AssetForm = () => {
             <HStack mt={20}>
               <Button
                 borderRadius={15}
-                h={40}
-                w={70}
                 bg="blueviolet"
                 type="submit"
               >
@@ -195,8 +195,6 @@ const AssetForm = () => {
               </Button>
               <Button
                 borderRadius={15}
-                h={40}
-                w={70}
                 bg="yellow"
                 onClick={handleCancel}
               >

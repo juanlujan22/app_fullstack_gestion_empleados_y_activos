@@ -28,7 +28,7 @@ const AssetListContainer = () => {
 
   const AddAssetButton = () => (
     <NavLink to={"/create-asset"}>
-      <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
+      <Button border="solid 3px black" borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
         Add Asset
       </Button>
     </NavLink>

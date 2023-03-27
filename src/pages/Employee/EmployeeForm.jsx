@@ -13,6 +13,7 @@ import {
   Button,
   VStack,
   HStack,
+  Center,
 } from "@chakra-ui/react";
 
 const EmployeeForm = () => {
@@ -83,6 +84,7 @@ const EmployeeForm = () => {
   //montado de formulario
   return (
     <>
+      <Center> <h1> Employee Form </h1> </Center>
       <VStack p={7} justifyContent="center">
         <FormControl
           borderRadius={10}
@@ -172,8 +174,6 @@ const EmployeeForm = () => {
               <Button
                 borderRadius={15}
                 w={100}
-                p="9"
-                m="15"
                 bg="blueviolet"
                 type="submit"
               >
@@ -182,8 +182,6 @@ const EmployeeForm = () => {
               <Button
                 borderRadius={15}
                 w={90}
-                p="23"
-                m="20"
                 bg="orange"
                 onClick={handleCancel}
               >

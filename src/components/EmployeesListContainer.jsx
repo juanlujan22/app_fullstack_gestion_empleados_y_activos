@@ -42,7 +42,7 @@ const EmployeesListContainer = () => {
   // funcion que genera boton de agregar empleado
   const AddEmployeeButton = () => (
     <NavLink to={"/create-employee"}>
-      <Button borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
+      <Button border="solid 3px black" borderRadius={10} bg="blueviolet" w={100} p="20" m="20">
         Add Employee
       </Button>
     </NavLink>
